@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Scan Print</string>
     <string name="action_about_name">关于</string>
+
+    <string name="action_bar_scan_name">扫一扫</string>
+    <string name="action_bar_print_name">打印</string>
+    <string name="action_bar_delete_name">删除</string>
+    <string name="action_bar_clear_name">清空</string>
+
+    <string name="scan_icon_name">&#xf01d;</string>
+    <string name="print_icon_name">&#xf02f;</string>
+    <string name="delete_icon_name">&#xf044;</string>
+    <string name="clear_icon_name">&#xf021;</string>
 </resources>

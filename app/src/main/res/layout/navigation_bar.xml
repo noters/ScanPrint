@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+        <LinearLayout
+                android:id="@+id/actionBarScanLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+            <!--<ImageView
+                    android:id="@+id/actionBarScanImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:src="@drawable/add_white"/>-->
+            <TextView
+                    android:id="@+id/actionBarScanIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scan_icon_name"
+                    android:textColor="@color/text_bar"
+                    android:textSize="28sp"/>
+
+            <TextView
+                    android:id="@+id/actionBarScanText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_bar_scan_name"
+                    android:textColor="@color/text_bar"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/actionBarPrintLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+            <!--<ImageView
+                    android:id="@+id/actionBarPrintImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:src="@drawable/add_white"/>-->
+            <TextView
+                    android:id="@+id/actionBarPrintIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/print_icon_name"
+                    android:textColor="@color/text_bar"
+                    android:textSize="28sp"/>
+
+            <TextView
+                    android:id="@+id/actionBarPrintText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_bar_print_name"
+                    android:textColor="@color/text_bar"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/actionBarDeleteLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+            <!--<ImageView
+                    android:id="@+id/actionBarDeleteImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:src="@drawable/add_white"/>-->
+            <TextView
+                    android:id="@+id/actionBarDeleteIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete_icon_name"
+                    android:textColor="@color/text_bar"
+                    android:textSize="28sp"/>
+
+            <TextView
+                    android:id="@+id/actionBarDeleteText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_bar_delete_name"
+                    android:textColor="@color/text_bar"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/actionBarClearLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+            <!--<ImageView
+                    android:id="@+id/actionBarClearImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:src="@drawable/add_white"/>-->
+            <TextView
+                    android:id="@+id/actionBarClearIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clear_icon_name"
+                    android:textColor="@color/text_bar"
+                    android:textSize="28sp"/>
+
+            <TextView
+                    android:id="@+id/actionBarClearText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_bar_clear_name"
+                    android:textColor="@color/text_bar"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
