@@ -11,4 +11,10 @@
     <string name="print_icon_name">&#xf02f;</string>
     <string name="delete_icon_name">&#xf044;</string>
     <string name="clear_icon_name">&#xf021;</string>
+
+    <string name="table_title_id_name">序号</string>
+    <string name="table_title_product_code_name">品号</string>
+    <string name="table_title_product_name_name">品名</string>
+    <string name="table_title_specifications_name">规格</string>
+    <string name="table_title_width_name">幅宽</string>
 </resources>
