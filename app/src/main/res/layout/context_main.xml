@@ -19,12 +19,17 @@
             android:layout_height="1.0dip"
             android:background="#686867"/>
 
+    <!--
+    android:background="@drawable/list_view_bg"
+    android:listSelector="@drawable/list_view_bg"
+    -->
     <ListView
             android:id="@+id/table_list"
             android:divider="#B4B3B3"
             android:dividerHeight="0.1dip"
             android:scrollbars="none"
-            android:background="@drawable/list_view_bg"
+            android:background="@color/snow"
+            android:listSelector="@drawable/list_view_bg"
             android:cacheColorHint="@android:color/transparent"
             android:fadingEdge="none"
             android:layout_width="fill_parent"

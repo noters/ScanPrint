@@ -3,11 +3,15 @@ package tools.com.scanprint;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import tools.com.scanprint.entrty.Product;
 
@@ -17,10 +21,15 @@ public class TableAdapter extends BaseAdapter {
 
     private List<Product> list;
     private LayoutInflater inflater;
+    private int selectItem = -1;
 
     public TableAdapter(Context context, List<Product> list) {
         this.list = list;
         inflater = LayoutInflater.from(context);
+    }
+
+    public void setSelectItem(int selectItem) {
+        this.selectItem = selectItem;
     }
 
     @Override
@@ -44,7 +53,7 @@ public class TableAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.e(TAG, "position: " + position + " convertView: " + convertView);
+        Log.e(TAG, "selectItem: " + selectItem + " position: " + position + " convertView: " + convertView);
 
         Product product = (Product) this.getItem(position);
 
@@ -76,6 +85,24 @@ public class TableAdapter extends BaseAdapter {
         viewHolder.tableTitleSpecifications.setTextSize(13);
         viewHolder.tableTitleWidth.setText(product.getWidth());
         viewHolder.tableTitleWidth.setTextSize(13);
+
+        /*if (selectItem == position) {
+            System.out.println("--------------" + parent);
+            Drawable drawable = inflater.getContext().getResources().getDrawable(R.drawable.list_view_bg);
+            ((ListView) parent).setSelector(drawable);
+            ((ListView) parent).setSelection(selectItem);
+            ((LinearLayout) convertView).setSelected(true);
+            ((LinearLayout) convertView).setPressed(true);
+            //((ListView) parent).setSelected(true);
+            //convertView.setSelected(true);
+            //viewHolder.tableTitleId.setBackgroundResource(R.drawable.list_view_bg);
+            *//*viewHolder.tableTitleProductCode.setActivated(true);
+            viewHolder.tableTitleProductName.setFocusable(true);
+            viewHolder.tableTitleSpecifications.setSelected(true);
+            viewHolder.tableTitleWidth.setSelected(true);*//*
+            //viewHolder.portalLinearLayout.setBackgroundColor(Color.GRAY);
+            //convertView.setBackgroundResource(R.drawable.list_view_bg);
+        }*/
 
         return convertView;
     }

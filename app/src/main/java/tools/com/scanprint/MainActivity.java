@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView actionBarScanText, actionBarPrintText, actionBarDeleteText, actionBarClearText, currentText;
 
     private TableAdapter tableAdapter;
-    private int tableDeletePosition;
+    private int tableDeletePosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewPager.setAdapter(adapter);
 
         ViewGroup tableTitle = (ViewGroup) view_context_main.findViewById(R.id.table_title);
-        tableTitle.setBackgroundColor(Color.rgb(177, 173, 172));
+        tableTitle.setBackgroundColor(Color.rgb(240, 255, 255));
 
         ListView tableListView = (ListView) view_context_main.findViewById(R.id.table_list);
         List<Product> productList = new ArrayList<>();
@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.actionBarDeleteLayout:
                 viewPager.setCurrentItem(0);
-                tableAdapter.deleteRow(tableDeletePosition);
+                tableDeleteRow();
             case 2:
                 /*actionBarDeleteImage.setSelected(true);
                 currentImage = actionBarDeleteImage;*/
@@ -246,7 +246,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         product.setSpecifications("xxx");
         product.setWidth("10");
 
+        tableAdapter.setSelectItem(tableDeletePosition);
         tableAdapter.addRow(product);
+        // 添加完了，重新设置，防止删除
+        tableDeletePosition = -1;
+    }
+
+    private void tableDeleteRow() {
+        // 大于-1时才删除，防止连续点删除按钮
+        if (tableDeletePosition > -1) {
+            tableAdapter.deleteRow(tableDeletePosition);
+            tableDeletePosition = -1;
+        } else {
+            String message = "请先选中要删除的记录";
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

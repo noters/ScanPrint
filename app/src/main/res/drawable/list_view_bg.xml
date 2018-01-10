@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--没有焦点时的背景颜色-->
-    <item android:state_window_focused="false" android:drawable="@color/ivory"/>
+    <!--没有焦点时的背景颜色
+    <item android:state_window_focused="false" android:drawable="@color/red"/>
 
-    <!--非触摸模式下获得焦点并单击时的背景颜色-->
-    <item android:state_focused="true" android:state_pressed="true" android:drawable="@color/ivory"/>
+    &lt;!&ndash;非触摸模式下获得焦点并单击时的背景颜色&ndash;&gt;
+    <item android:state_focused="true" android:state_pressed="true" android:drawable="@color/green"/>
 
-    <!--触摸模式下单击时的背景颜色-->
-    <item android:state_focused="false" android:state_pressed="true" android:drawable="@color/white"/>
+    &lt;!&ndash;触摸模式下单击时的背景颜色&ndash;&gt;
+    <item android:state_focused="false" android:state_pressed="true" android:drawable="@color/yellow"/>
 
-    <!--选中时的背景颜色-->
-    <item android:state_selected="true" android:drawable="@color/bisque"/>
+    &lt;!&ndash;选中时的背景颜色&ndash;&gt;
+    <item android:state_selected="true" android:drawable="@color/black"/>
 
-    <!--获得焦点时的背景颜色-->
-    <item android:state_focused="true" android:drawable="@color/seashell"/>
+    &lt;!&ndash;获得焦点时的背景颜色&ndash;&gt;
+    <item android:state_focused="true" android:drawable="@color/hotpink"/>-->
+
+    <item android:state_activated="true" android:drawable="@color/yellow"/>
+    <item android:state_pressed="true" android:drawable="@color/ivory" /><!--按下时的背景-->
+    <item android:state_focused="true" android:drawable="@color/green" /><!--获得焦点时的背景-->
+    <item android:state_selected="true" android:drawable="@color/blue" /><!--选中状态的背景-->
+    <item android:drawable="@color/cornsilk" /> <!--默认背景-->
 </selector>
