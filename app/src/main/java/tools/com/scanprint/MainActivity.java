@@ -1,5 +1,6 @@
 package tools.com.scanprint;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.view.ViewPager;
@@ -9,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import tools.com.scanprint.entrty.Product;
 
 import java.util.ArrayList;
@@ -223,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.actionBarClearLayout:
                 viewPager.setCurrentItem(0);
-                tableAdapter.clearRow();
+                tableClearRow();
             case 3:
                 /*actionBarClearImage.setSelected(true);
                 currentImage = actionBarClearImage;*/
@@ -238,6 +241,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void tableAddRow() {
+        new IntentIntegrator(this)
+                .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)// 扫码的类型,可选：一维码，二维码，一/二维码
+                .setCaptureActivity(ScanActivity.class)
+                .setPrompt("请对准二维码")// 设置提示语
+                .setCameraId(0)// 选择摄像头,可使用前置或者后置
+                .setBeepEnabled(true)// 是否开启声音,扫完码之后会"哔"的一声
+                .setBarcodeImageEnabled(true)// 扫完码之后生成二维码的图片
+                .initiateScan();// 初始化扫码
+    }
+
+    private void tableAddRowCall(String result) {
         Product product = new Product();
         long id = System.currentTimeMillis();
         String idString = String.valueOf(id);
@@ -260,6 +274,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             String message = "请先选中要删除的记录";
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void tableClearRow() {
+        tableDeletePosition = -1;
+        tableAdapter.clearRow();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            String resultContents = result.getContents();
+            if(resultContents == null) {
+                Toast.makeText(this, "扫描取消", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "扫描成功: " + resultContents, Toast.LENGTH_LONG).show();
+
+                tableAddRowCall(resultContents);
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
