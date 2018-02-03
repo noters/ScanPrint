@@ -32,6 +32,10 @@ public class TableAdapter extends BaseAdapter {
         this.selectItem = selectItem;
     }
 
+    public List<Product> getList() {
+        return list;
+    }
+
     @Override
     public int getCount() {
         int ret = 0;

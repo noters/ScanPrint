@@ -1,21 +1,35 @@
 package tools.com.scanprint;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.os.Message;
+import android.posapi.PosApi;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.*;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import tools.com.scanprint.entrty.Product;
+import tools.com.scanprint.miniprinter.App;
+import tools.com.scanprint.utils.PrintTextUtils;
+import tools.com.scanprint.utils.StringUtils;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -32,6 +46,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TableAdapter tableAdapter;
     private int tableDeletePosition = -1;
 
+    private EditText editText;
+
+    private PosApi mApi = null;
+
+    // 定义一个变量，来标识是否退出
+    private static boolean isExit = false;
+
+    private static boolean isChinese = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initView();
         initData();
-
+        initPrinter();
     }
 
     @Override
@@ -146,6 +169,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });*/
 
+        editText = (EditText) findViewById(R.id.text_input_info);
+
+        //showSoftInputFromWindow(this, editText);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String inputText = editText.getText().toString();
+                if (inputText.contains("\n") || inputText.contains("\r\n")) {
+                    Log.e(TAG, "editText length: " + count);
+                    String formatInputText = inputText.replace("\n", "");
+                    tableAddRowCall(formatInputText);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                //Log.i(TAG, "输入文本之前的状态");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //Log.i(TAG, "输入文字后的状态");
+            }
+        });
+
     }
 
     private void initData() {
@@ -180,6 +229,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void initPrinter() {
+        //1  单片机上电
+        try {
+            FileWriter localFileWriterOn = new FileWriter(new File("/proc/gpiocontrol/set_sam"));
+            localFileWriterOn.write("1");
+            localFileWriterOn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //2 接口初始化
+        mApi = App.getInstance().getPosApi();
+        //设置初始化回调
+        mApi.setOnComEventListener(mCommEventListener);
+        //使用扩展方式初始化接口
+        mApi.initDeviceEx("/dev/ttyMT2");
+        // 初始化打印类
+        PrintTextUtils.init(this);
+    }
+
+    PosApi.OnCommEventListener mCommEventListener = new PosApi.OnCommEventListener() {
+
+        @Override
+        public void onCommState(int cmdFlag, int state, byte[] resp, int respLen) {
+            switch(cmdFlag){
+                case PosApi.POS_INIT:
+                    if(state==PosApi.COMM_STATUS_SUCCESS){
+                        Toast.makeText(getApplicationContext(), getString(R.string.pos_init_success), Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.pos_init_fail), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+            }
+        }
+
+    };
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -205,6 +290,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.actionBarPrintLayout:
                 viewPager.setCurrentItem(0);
+                tablePrintRow();
             case 1:
                 /*actionBarPrintImage.setSelected(true);
                 currentImage = actionBarPrintImage;*/
@@ -241,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void tableAddRow() {
-        new IntentIntegrator(this)
+        /*new IntentIntegrator(this)
                 .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)// 扫码的类型,可选：一维码，二维码，一/二维码
                 .setCaptureActivity(ScanActivity.class)
                 .setPrompt("请对准二维码")// 设置提示语
@@ -249,21 +335,71 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setBeepEnabled(true)// 是否开启声音,扫完码之后会"哔"的一声
                 .setBarcodeImageEnabled(true)// 扫完码之后生成二维码的图片
                 .initiateScan();// 初始化扫码
+        */
+        Log.e(TAG, "print language isChinese: " + isChinese);
+
+        if (isChinese) {
+            isChinese = false;
+            actionBarScanText.setText(getString(R.string.action_bar_scan_name_en));
+        } else {
+            isChinese = true;
+            actionBarScanText.setText(getString(R.string.action_bar_scan_name));
+        }
+
     }
 
     private void tableAddRowCall(String result) {
-        Product product = new Product();
-        long id = System.currentTimeMillis();
-        String idString = String.valueOf(id);
-        product.setProductCode("code" + idString.substring(idString.length() - 4));
-        product.setProductName("name");
-        product.setSpecifications("xxx");
-        product.setWidth("10");
+        // 按@符号分割
+        String[] item = result.split("@");
+        Log.e(TAG, "addRowCall item length: " + item.length);
+        if (item.length == 4) {
+            Product product = new Product();
+            product.setProductCode(item[0]);
+            product.setProductName(item[1]);
+            product.setSpecifications(item[2]);
+            product.setWidth(item[3]);
 
-        tableAdapter.setSelectItem(tableDeletePosition);
-        tableAdapter.addRow(product);
-        // 添加完了，重新设置，防止删除
-        tableDeletePosition = -1;
+            // 排重
+            boolean flag = false;
+            List<Product> list = tableAdapter.getList();
+            for (Product cacheProduct : list) {
+                if (product.getProductCode().equals(cacheProduct.getProductCode())) {
+                    if (product.getProductName().equals(cacheProduct.getProductName()) &&
+                            product.getSpecifications().equals(cacheProduct.getSpecifications()) &&
+                            product.getWidth().equals(cacheProduct.getWidth())) {
+                        flag = true;
+                    }
+                }
+            }
+            if (!flag) {
+                tableAdapter.setSelectItem(tableDeletePosition);
+                tableAdapter.addRow(product);
+                // 添加完了，重新设置，防止删除
+                tableDeletePosition = -1;
+            } else {
+                String message = getString(R.string.table_scan_already);
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            }
+
+            // 清空输入框
+            editText.setText("");
+            // 设置焦点
+            editText.setFocusable(true);
+            editText.setFocusableInTouchMode(true);
+            editText.requestFocus();
+        }
+    }
+
+    private void tablePrintRow() {
+        List<Product> list = tableAdapter.getList();
+        Log.e(TAG, "printRow list size: " + list.size());
+        if (list.size() > 0) {
+            String content = StringUtils.getFormatPrintText(this, list, isChinese);
+            PrintTextUtils.printTextWithInput(60, content);
+        } else {
+            String message = getString(R.string.table_print_row);
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void tableDeleteRow() {
@@ -272,15 +408,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tableAdapter.deleteRow(tableDeletePosition);
             tableDeletePosition = -1;
         } else {
-            String message = "请先选中要删除的记录";
+            String message = getString(R.string.table_delete_row);
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void tableClearRow() {
-        tableDeletePosition = -1;
-        tableAdapter.clearRow();
+        // 创建退出对话框
+        AlertDialog isExit = new AlertDialog.Builder(this).create();
+        // 设置对话框标题
+        isExit.setTitle(getString(R.string.clear_alert_title));
+        // 设置对话框消息
+        isExit.setMessage(getString(R.string.clear_alert_message));
+        // 添加选择按钮并注册监听
+        isExit.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.clear_alert_confirm), listenerClear);
+        isExit.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.clear_alert_cancel), listenerClear);
+        // 显示对话框
+        isExit.show();
     }
+
+    /**监听对话框里面的button点击事件*/
+    DialogInterface.OnClickListener listenerClear = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
+                    tableDeletePosition = -1;
+                    tableAdapter.clearRow();
+                    break;
+                case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -288,9 +450,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(result != null) {
             String resultContents = result.getContents();
             if(resultContents == null) {
-                Toast.makeText(this, "扫描取消", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.scan_cancel), Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this, "扫描成功: " + resultContents, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.scan_success) + resultContents, Toast.LENGTH_LONG).show();
 
                 tableAddRowCall(resultContents);
             }
@@ -298,5 +460,91 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //销毁接口
+        if(mApi!=null){
+            mApi.closeDev();
+        }
+        try {
+            FileWriter localFileWriterOn = new FileWriter(new File("/proc/gpiocontrol/set_sam"));
+            localFileWriterOn.write("0");
+            localFileWriterOn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void showSoftInputFromWindow(Activity activity, EditText editText) {
+        /*editText.setFocusable(true);
+        editText.setFocusableInTouchMode(true);
+        editText.requestFocus();
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);*/
+
+        editText.requestFocus();
+        InputMethodManager imm = (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+
+    }
+
+    Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            isExit = false;
+        }
+    };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void exit() {
+        if (!isExit) {
+            isExit = true;
+            Toast.makeText(getApplicationContext(), getString(R.string.exit_message),
+                    Toast.LENGTH_SHORT).show();
+            // 利用handler延迟发送更改状态信息
+            mHandler.sendEmptyMessageDelayed(0, 1000);
+        } else {
+            //finish();
+            //System.exit(0);
+            // 创建退出对话框
+            AlertDialog isExit = new AlertDialog.Builder(this).create();
+            // 设置对话框标题
+            isExit.setTitle(getString(R.string.exit_alert_title));
+            // 设置对话框消息
+            isExit.setMessage(getString(R.string.exit_alert_message));
+            // 添加选择按钮并注册监听
+            isExit.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.exit_alert_confirm), listener);
+            isExit.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.exit_alert_cancel), listener);
+            // 显示对话框
+            isExit.show();
+        }
+    }
+
+    /**监听对话框里面的button点击事件*/
+    DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
+                    finish();
+                    break;
+                case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
 }
