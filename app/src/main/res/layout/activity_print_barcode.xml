@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:baselineAligned="false"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:baselineAligned="false"
+              android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_height="0dp"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:gravity="center" >
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center" >
 
         <!--<ImageView
             android:id="@+id/iv2d"
@@ -19,12 +19,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_height="0dp"
-        android:layout_width="match_parent"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:orientation="vertical" >
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:orientation="vertical" >
 
         <!--<LinearLayout
             android:layout_width="match_parent"
@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/generate_qrcode" />
-            
+
             <Button
                 android:id="@+id/btnCreatPic"
                 android:layout_width="wrap_content"
@@ -138,43 +138,43 @@
             </EditText>
         </LinearLayout>-->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
             <Button
-                android:id="@+id/btnBlack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                    android:id="@+id/btnBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                android:text="黑标检测" />
+                    android:text="黑标检测" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal" >
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
 
             <Button
-                android:id="@+id/btnPrintText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="打印文字" />
+                    android:id="@+id/btnPrintText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="打印文字" />
             <Button
-                android:id="@+id/btnPrint"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="打印图片" />
-            
-             <Button
-                android:id="@+id/btnPrintMix"
-               android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="混合打印" />
+                    android:id="@+id/btnPrint"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="打印图片" />
+
+            <Button
+                    android:id="@+id/btnPrintMix"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="混合打印" />
         </LinearLayout>
     </LinearLayout>
 
