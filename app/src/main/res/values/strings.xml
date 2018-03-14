@@ -54,6 +54,10 @@
     <string name="clear_alert_confirm">确定</string>
     <string name="clear_alert_cancel">取消</string>
 
+    <string name="add_error_alert_title">系统提示</string>
+    <string name="add_error_alert_message">记录错误，请重新输入</string>
+    <string name="add_error_alert_confirm">确定</string>
+
     <string name="print_format_title">东莞伟德\n地址:东莞市常平镇袁山贝大道1号\n联系人:黄先生(Dick)\n电话:86-769-83916128\n-----------样本如下-----------</string>
     <string name="print_format_body_start">----------第</string>
     <string name="print_format_body_end">款----------</string>

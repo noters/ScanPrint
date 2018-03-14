@@ -16,5 +16,8 @@ public class StringTest {
         System.out.println("------");
         System.out.println(out);
         System.out.println("------");
+
+        String[] ab = "a@b@c@".split("@");
+        System.out.println(ab.length);
     }
 }

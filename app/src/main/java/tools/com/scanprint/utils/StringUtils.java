@@ -8,6 +8,9 @@ import java.util.List;
 
 public class StringUtils {
 
+    private static int splitLength = 4;
+    private static String[] splitSeparate = {"@", ";"};
+
     public static String getFormatPrintText(Context context, List<Product> list, boolean isChinese) {
         StringBuilder sb = new StringBuilder();
         int index = 1;
@@ -69,5 +72,21 @@ public class StringUtils {
         sb.append(printFormatFooterEnd);
         sb.append("\n\n\n\n");
         return sb.toString();
+    }
+
+    // 按符号分割，可能是@符或;号
+    public static String[] getStringSplit(String inputString) {
+        String[] resultString = new String[]{};
+        if (inputString != null && !"".equals(inputString)) {
+            for (String separate : splitSeparate) {
+                resultString = inputString.split(separate);
+                if (resultString != null && resultString.length == splitLength) {
+                    break;
+                } else {
+                    resultString = new String[]{};
+                }
+            }
+        }
+        return resultString;
     }
 }

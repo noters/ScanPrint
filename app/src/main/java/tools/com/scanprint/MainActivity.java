@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static boolean isChinese = true;
 
+    private NotificationVibrate notificationVibrate = new NotificationVibrate();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        notificationVibrate.init(this);
         initView();
         initData();
         initPrinter();
@@ -349,8 +352,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void tableAddRowCall(String result) {
-        // 按@符号分割
-        String[] item = result.split("@");
+        // 按符号分割
+        String[] item = StringUtils.getStringSplit(result);
         Log.e(TAG, "addRowCall item length: " + item.length);
         if (item.length == 4) {
             Product product = new Product();
@@ -380,14 +383,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String message = getString(R.string.table_scan_already);
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
-
-            // 清空输入框
-            editText.setText("");
-            // 设置焦点
-            editText.setFocusable(true);
-            editText.setFocusableInTouchMode(true);
-            editText.requestFocus();
+        } else {
+            notificationVibrate.notificationVibrate();
+            tableAddRowError(result);
         }
+        // 清空输入框
+        editText.setText("");
+        // 设置焦点
+        editText.setFocusable(true);
+        editText.setFocusableInTouchMode(true);
+        editText.requestFocus();
+
     }
 
     private void tablePrintRow() {
@@ -540,6 +546,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     finish();
                     break;
                 case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    private void tableAddRowError(String message) {
+        // 创建退出对话框
+        AlertDialog isExit = new AlertDialog.Builder(this).create();
+        // 设置对话框标题
+        isExit.setTitle(getString(R.string.add_error_alert_title));
+        // 设置对话框消息
+        isExit.setMessage(message + "\n" + getString(R.string.add_error_alert_message));
+        // 添加选择按钮并注册监听
+        isExit.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.add_error_alert_confirm), listenerAddError);
+        // 显示对话框
+        isExit.show();
+    }
+
+    /**监听对话框里面的button点击事件*/
+    DialogInterface.OnClickListener listenerAddError = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
                     break;
                 default:
                     break;
