@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         notificationVibrate.init(this);
         initView();
         initData();
+        // 模拟器时要注释此行，正式发布时要放开
         initPrinter();
     }
 

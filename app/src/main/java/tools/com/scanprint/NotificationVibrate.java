@@ -22,7 +22,7 @@ public class NotificationVibrate {
     public void notificationVibrate() {
         if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
             notification();
-            vibrate();
+            // vibrate();
         } else if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE) {
             vibrate();
         } else {
@@ -32,8 +32,10 @@ public class NotificationVibrate {
 
     private void notification() {
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Ringtone rt = RingtoneManager.getRingtone(context.getApplicationContext(), uri);
-        rt.play();
+        if (uri != null) {
+            Ringtone ringtone = RingtoneManager.getRingtone(context, uri);
+            ringtone.play();
+        }
     }
 
     private void vibrate() {

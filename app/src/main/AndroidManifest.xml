@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+    <!--模拟器时要删除application里的这行，正式发布时要在application里加上此行-->
     <!--android:name="tools.com.scanprint.miniprinter.App"-->
     <application
             android:name="tools.com.scanprint.miniprinter.App"
