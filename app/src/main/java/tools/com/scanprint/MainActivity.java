@@ -277,56 +277,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void changeTab(int id) {
-        //currentImage.setSelected(false);
-        currentIcon.setSelected(false);
-        currentText.setSelected(false);
-        switch (id) {
-            case R.id.actionBarScanLayout:
-                viewPager.setCurrentItem(0);
-                tableAddRow();
-            case 0:
+        try {
+            //currentImage.setSelected(false);
+            currentIcon.setSelected(false);
+            currentText.setSelected(false);
+            switch (id) {
+                case R.id.actionBarScanLayout:
+                    viewPager.setCurrentItem(0);
+                    tableAddRow();
+                case 0:
                 /*actionBarScanImage.setSelected(true);
                 currentImage = actionBarScanImage;*/
-                actionBarScanIcon.setSelected(true);
-                currentIcon = actionBarScanIcon;
-                actionBarScanText.setSelected(true);
-                currentText = actionBarScanText;
-                break;
-            case R.id.actionBarPrintLayout:
-                viewPager.setCurrentItem(0);
-                tablePrintRow();
-            case 1:
+                    actionBarScanIcon.setSelected(true);
+                    currentIcon = actionBarScanIcon;
+                    actionBarScanText.setSelected(true);
+                    currentText = actionBarScanText;
+                    break;
+                case R.id.actionBarPrintLayout:
+                    viewPager.setCurrentItem(0);
+                    tablePrintRow();
+                case 1:
                 /*actionBarPrintImage.setSelected(true);
                 currentImage = actionBarPrintImage;*/
-                actionBarPrintIcon.setSelected(true);
-                currentIcon = actionBarPrintIcon;
-                actionBarPrintText.setSelected(true);
-                currentText = actionBarPrintText;
-                break;
-            case R.id.actionBarDeleteLayout:
-                viewPager.setCurrentItem(0);
-                tableDeleteRow();
-            case 2:
+                    actionBarPrintIcon.setSelected(true);
+                    currentIcon = actionBarPrintIcon;
+                    actionBarPrintText.setSelected(true);
+                    currentText = actionBarPrintText;
+                    break;
+                case R.id.actionBarDeleteLayout:
+                    viewPager.setCurrentItem(0);
+                    tableDeleteRow();
+                case 2:
                 /*actionBarDeleteImage.setSelected(true);
                 currentImage = actionBarDeleteImage;*/
-                actionBarDeleteIcon.setSelected(true);
-                currentIcon = actionBarDeleteIcon;
-                actionBarDeleteText.setSelected(true);
-                currentText = actionBarDeleteText;
-                break;
-            case R.id.actionBarClearLayout:
-                viewPager.setCurrentItem(0);
-                tableClearRow();
-            case 3:
+                    actionBarDeleteIcon.setSelected(true);
+                    currentIcon = actionBarDeleteIcon;
+                    actionBarDeleteText.setSelected(true);
+                    currentText = actionBarDeleteText;
+                    break;
+                case R.id.actionBarClearLayout:
+                    viewPager.setCurrentItem(0);
+                    tableClearRow();
+                case 3:
                 /*actionBarClearImage.setSelected(true);
                 currentImage = actionBarClearImage;*/
-                actionBarClearIcon.setSelected(true);
-                currentIcon = actionBarClearIcon;
-                actionBarClearText.setSelected(true);
-                currentText = actionBarClearText;
-                break;
-            default:
-                break;
+                    actionBarClearIcon.setSelected(true);
+                    currentIcon = actionBarClearIcon;
+                    actionBarClearText.setSelected(true);
+                    currentText = actionBarClearText;
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

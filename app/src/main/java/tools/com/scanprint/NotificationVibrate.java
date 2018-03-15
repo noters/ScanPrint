@@ -20,13 +20,19 @@ public class NotificationVibrate {
     }
 
     public void notificationVibrate() {
-        if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
-            notification();
-            // vibrate();
-        } else if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE) {
-            vibrate();
-        } else {
+        try {
+            if (audioManager != null) {
+                if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
+                    notification();
+                    // vibrate();
+                } else if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE) {
+                    vibrate();
+                } else {
 
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -39,7 +45,9 @@ public class NotificationVibrate {
     }
 
     private void vibrate() {
-        vibrator.vibrate(new long[]{0, 500},-1);
+        if (vibrator != null) {
+            vibrator.vibrate(new long[]{0, 500}, -1);
+        }
     }
 
 }
