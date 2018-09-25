@@ -80,7 +80,16 @@ public class StringUtils {
         if (inputString != null && !"".equals(inputString)) {
             for (String separate : splitSeparate) {
                 resultString = inputString.split(separate);
-                if (resultString != null && resultString.length == splitLength) {
+                if (resultString != null && resultString.length > 0) {
+                    // 如果不为空且长度不为0时反回正常，如果长度少于4个就返回长度为4的，无值置为空串
+                    if (resultString.length != splitLength) {
+                        String[] resultStringTemp = new String[splitLength];
+                        resultStringTemp[0] = resultString.length > 0 ? resultString[0] : "";
+                        resultStringTemp[1] = resultString.length > 1 ? resultString[1] : "";
+                        resultStringTemp[2] = resultString.length > 2 ? resultString[2] : "";
+                        resultStringTemp[3] = resultString.length > 3 ? resultString[3] : "";
+                        resultString = resultStringTemp;
+                    }
                     break;
                 } else {
                     resultString = new String[]{};
